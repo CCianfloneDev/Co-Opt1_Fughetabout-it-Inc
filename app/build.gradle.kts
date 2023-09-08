@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.coopt1_coleandtadgh"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.coopt1_coleandtadgh"
         minSdk = 31
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
