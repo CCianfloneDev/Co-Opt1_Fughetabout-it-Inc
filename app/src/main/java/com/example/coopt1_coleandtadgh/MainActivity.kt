@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
 
+    // ActivityResultLauncher for handling permission requests
     private val activityResultLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions())
@@ -45,6 +46,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    /**
+     * Called when the activity is first created. This is where you should
+     * perform all of your normal static set up: create views, bind data to
+     * lists, etc. This method also provides you with a Bundle containing the
+     * activity's previously saved state, if that state was saved by the
+     * onSaveInstanceState() method.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down, then this Bundle contains the data it
+     *     most recently supplied in onSaveInstanceState().
+     * @see [android.app.Activity.onCreate]
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -64,6 +77,9 @@ class MainActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
+    /**
+     * Capture a photo using the camera.
+     */
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
@@ -104,10 +120,16 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Close the app.
+     */
     private fun closeApp() {
         finish()
     }
 
+    /**
+     * Start the camera and configure preview and image capture use cases.
+     */
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -142,10 +164,16 @@ class MainActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+    /**
+     * Request camera permissions using the ActivityResultLauncher.
+     */
     private fun requestPermissions() {
         activityResultLauncher.launch(REQUIRED_PERMISSIONS)
     }
 
+    /**
+     * Check if all required permissions are granted.
+     */
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             baseContext, it) == PackageManager.PERMISSION_GRANTED
